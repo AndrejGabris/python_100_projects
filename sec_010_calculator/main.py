@@ -30,11 +30,15 @@ def calculator():
     for symbol in operations:
         print(symbol)
     chosen_operation = input("What operation, from line above do you want to use?: ")
+    while chosen_operation not in list(operations.keys()):
+        chosen_operation = input("What operation, from line above do you want to use?: ")
     answer = operations[chosen_operation](num1, num2)
     print(f"{num1} {chosen_operation} {num2} = {answer}")
     continue_calculation = input(f"Type 'y' to continue calculating with {answer}, or type 'n' to exit.: ")
     while continue_calculation == "y":
         chosen_operation = input("Pick an operation: ")
+        while chosen_operation not in list(operations.keys()):
+            chosen_operation = input("What operation, from line above do you want to use?: ")
         num3 = float(input("What's the next number?: "))
         new_answer = operations[chosen_operation](answer, num3)
         print(f"{answer} {chosen_operation} {num3} = {new_answer}")

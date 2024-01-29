@@ -6,7 +6,7 @@ alphabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n'
 
 
 def encrpyt(plain_text, shift_amount):
-    cipher_text = ""
+    ciCpher_text = ""
     for letter in plain_text:
         if letter in alphabet:
             original_letter_index = alphabet.index(letter)

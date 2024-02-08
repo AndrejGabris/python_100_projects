@@ -1,28 +1,106 @@
-#Password Generator Project
+import tkinter as tk
+from tkinter import messagebox
 import random
-letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
-numbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
-symbols = ['!', '#', '$', '%', '&', '(', ')', '*', '+']
+import pyperclip
 
-nr_letters = random.randint(8, 10)
-nr_symbols = random.randint(2, 4)
-nr_numbers = random.randint(2, 4)
 
-password_list = []
+# ---------------------------- PASSWORD GENERATOR ------------------------------- #
+def generate_password():
+    letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
+    numbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
+    symbols = ['!', '#', '$', '%', '&', '(', ')', '*', '+']
 
-for char in range(nr_letters):
-  password_list.append(random.choice(letters))
+    nr_letters = random.randint(8, 10)
+    nr_symbols = random.randint(2, 4)
+    nr_numbers = random.randint(2, 4)
 
-for char in range(nr_symbols):
-  password_list += random.choice(symbols)
+    password_list_letters = [letters[nr] for nr in range(nr_letters)]
+    password_list_symbols = [symbols[nr] for nr in range(nr_symbols)]
+    password_list_numbers = [numbers[nr] for nr in range(nr_numbers)]
+    password_list = password_list_letters + password_list_symbols + password_list_numbers
+    random.shuffle(password_list)
 
-for char in range(nr_numbers):
-  password_list += random.choice(numbers)
+    password = "".join(password_list)
+    
+    
+    
+    password_entry.delete(0, tk.END)
+    password_entry.insert(0, password)
+    pyperclip.copy(password)
 
-random.shuffle(password_list)
+# ---------------------------- SAVE PASSWORD ------------------------------- #
 
-password = ""
-for char in password_list:
-  password += char
+def save_password():
+    website = website_entry.get()
+    email = user_name_entry.get()
+    password = password_entry.get()
+    
+    is_empty = website.strip() == "" or password.strip() == ""
+    if is_empty:
+        messagebox.showwarning(title="Oops", message="Please don't leave any fields empty")
+    else:
+        is_ok = messagebox.askokcancel(title=website, message=f"These are the details entered: \n\nEmail: {email} \nPassword: {password} \n\nIs it ok to save?")
+        
+        if is_ok:
+            with open(r"sec_029_tkinter_password_manger\data.txt", mode="a") as file:
+                file.write(f"{website} | {email} | {password}\n")
+            
+            website_entry.delete(0, tk.END)
+            password_entry.delete(0, tk.END)
+            website_entry.focus()
+  
+        
 
-print(f"Your password is: {password}")
+# ---------------------------- UI SETUP ------------------------------- #
+def set_a_window_position(root, win_hei, win_wid):
+    screen_width = root.winfo_screenwidth()
+    screen_height = root.winfo_screenheight()
+    x_pos_center = (screen_width - win_wid) // 2
+    y_pos_center = (screen_height - win_hei) // 2
+    root.geometry(newGeometry=f"{win_wid}x{win_hei}+{x_pos_center}+{y_pos_center}")
+
+
+window = tk.Tk()
+window.title("Password Manager")
+window_width = 520
+window_height = 420
+set_a_window_position(window, win_hei=window_height, win_wid=window_width )
+window.config(padx=50, pady=50)
+
+lock_canvas = tk.Canvas(height=200, width=200)
+lock_path = tk.PhotoImage(file=r"sec_029_tkinter_password_manger\logo.png")
+lock_canvas.create_image(100, 100, image=lock_path)
+lock_canvas.grid(column=1, row=0)
+
+
+
+
+website_label = tk.Label(text="Website:")
+website_label.grid(column=0, row=1)
+website_entry = tk.Entry(width=53)
+website_entry.focus()
+website_entry.grid(column=1, row=1, columnspan=2)
+
+
+user_name_label = tk.Label(text="Email/Username:")
+user_name_label.grid(column=0, row=2)
+user_name_entry = tk.Entry(width=53)
+user_name_entry.insert(0, "test@email.com")
+user_name_entry.grid(column=1, row=2, columnspan=2)
+
+
+password_label = tk.Label(text="Password:")
+password_label.grid(column=0, row=3)
+password_entry = tk.Entry(width=33)
+password_entry.grid(column=1, row=3, padx=0)
+password_generate_button = tk.Button(text="Generate Password", width=15, command=generate_password)
+password_generate_button.grid(column=2, row=3)
+
+add_button = tk.Button(text="Add", width=45, command=save_password)
+add_button.grid(column=1, row=4, columnspan=2)
+
+
+
+
+
+window.mainloop()

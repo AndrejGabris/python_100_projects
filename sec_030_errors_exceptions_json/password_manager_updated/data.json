@@ -1,0 +1,22 @@
+{
+    "Facebook": {
+        "email": "test@email.com",
+        "password": "id0jc#geab$1!hf"
+    },
+    "Amazon": {
+        "email": "test@email.com",
+        "password": "h3f2e!dig1cbja0#$"
+    },
+    "Ebay": {
+        "email": "test@email.com",
+        "password": "0i$ahb%fg1j!ec#d"
+    },
+    "Tesla": {
+        "email": "test@email.com",
+        "password": "2caf#!g%e1d$h0bi"
+    },
+    "Nike": {
+        "email": "test@email.com",
+        "password": "db#1a!0e%hfcg$2"
+    }
+}

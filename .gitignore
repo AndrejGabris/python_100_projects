@@ -3,3 +3,4 @@ venv
 __pycache__/
 test.py
 test2.py
+sec_032_smtpltlib_send_emails/main*
